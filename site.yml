@@ -13,8 +13,3 @@
         upgrade: dist
         autoremove: yes
         autoclean: yes
-   
-    - name: Clean up unnecessary packages
-      ansible.builtin.apt:
-        autoclean: yes
-        autoremove: yes
