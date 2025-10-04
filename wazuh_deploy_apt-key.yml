@@ -1,11 +1,10 @@
 ---
-- name: Deploy Wazuh Agent on Linux hosts
+- name: Deploy Wazuh Agent on all Linux hosts
   hosts: all
   become: true
   vars:
-    wazuh_manager_ip: "192.168.1.36"
+    wazuh_manager_ip: "192.168.1.36"    # Replace with your Wazuh manager IP
     wazuh_repo_url: "https://packages.wazuh.com/4.x/apt/"
-    wazuh_repo_key_url: "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
 
   tasks:
     - name: Install required dependencies
@@ -17,15 +16,15 @@
         state: present
         update_cache: yes
 
-    - name: Download Wazuh GPG key
-      ansible.builtin.get_url:
-        url: "{{ wazuh_repo_key_url }}"
-        dest: /usr/share/keyrings/wazuh-archive-keyring.gpg
-        mode: '0644'
+    - name: Add Wazuh GPG key (bypass HTTPS cert issues)
+      ansible.builtin.apt_key:
+        url: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+        state: present
+        validate_certs: no
 
     - name: Add Wazuh repository
       ansible.builtin.apt_repository:
-        repo: "deb [signed-by=/usr/share/keyrings/wazuh-archive-keyring.gpg] {{ wazuh_repo_url }} stable main"
+        repo: "deb {{ wazuh_repo_url }} stable main"
         state: present
 
     - name: Install Wazuh agent
