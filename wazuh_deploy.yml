@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars:
-    wazuh_manager_ip: "192.168.1.10"   # Replace with your Wazuh manager IP
+    wazuh_manager_ip: "192.168.1.36"   # Replace with your Wazuh manager IP
     wazuh_repo_url: "https://packages.wazuh.com/4.x/apt/"   # Adjust version if needed
     wazuh_repo_key_url: "https://packages.wazuh.com/key/GPG-KEY-WAZUH"
 
