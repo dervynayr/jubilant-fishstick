@@ -1,0 +1,7 @@
+- name: Check kernel version
+  ansible.builtin.command: uname -r
+  register: kernel_version
+
+- name: Print kernel version
+  ansible.builtin.debug:
+    msg: "Kernel version is {{ kernel_version.stdout }}"
