@@ -1,5 +1,5 @@
 ---
-- name: CIS Debian Hardening Baseline
+- name: wazuh agent restart scan
   hosts: all
   become: yes
 
