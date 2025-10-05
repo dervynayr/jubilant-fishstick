@@ -1,3 +1,10 @@
-- name: Trigger Wazuh SCA rescan
-  command: /var/ossec/bin/wazuh-sca --scan 001
+---
+- name: CIS Debian Hardening Baseline
+  hosts: all
   become: yes
+
+  tasks:
+
+  - name: Trigger Wazuh SCA rescan
+    command: /var/ossec/bin/wazuh-sca --scan 001
+    become: yes
