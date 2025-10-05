@@ -1,0 +1,52 @@
+---
+- name: CIS Debian Hardening Baseline
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Ensure password expiration is 365 days or less
+      lineinfile:
+        path: /etc/login.defs
+        regexp: '^PASS_MAX_DAYS'
+        line: 'PASS_MAX_DAYS   90'
+        state: present
+
+    - name: Ensure password minimum days is set to 7
+      lineinfile:
+        path: /etc/login.defs
+        regexp: '^PASS_MIN_DAYS'
+        line: 'PASS_MIN_DAYS   7'
+        state: present
+
+    - name: Ensure core dumps are restricted
+      lineinfile:
+        path: /etc/security/limits.conf
+        line: '* hard core 0'
+        create: yes
+
+    - name: Disable IPv6 (if not needed)
+      sysctl:
+        name: net.ipv6.conf.all.disable_ipv6
+        value: '1'
+        state: present
+        reload: yes
+
+    - name: Ensure ufw is installed and enabled
+      apt:
+        name: ufw
+        state: present
+      notify: Enable UFW
+
+    - name: Ensure auditd is installed and running
+      apt:
+        name: auditd
+        state: present
+      notify: Restart Auditd
+
+  handlers:
+    - name: Enable UFW
+      command: ufw enable
+    - name: Restart Auditd
+      service:
+        name: auditd
+        state: restarted
