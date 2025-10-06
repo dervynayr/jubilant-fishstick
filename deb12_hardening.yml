@@ -1,0 +1,5 @@
+- name: Apply Debian 12 CIS Hardening
+  hosts: all
+  become: yes
+  roles:
+    - DEBIAN12-CIS
