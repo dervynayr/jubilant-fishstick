@@ -1,0 +1,23 @@
+---
+- name: Ubuntu 22 CIS Hardening - Lab Safe
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  vars:
+    # Skip GRUB hardening to avoid blocking boot
+    ubtu22cis_skip_grub: true
+
+    # Keep SSH accessible
+    ubtu22cis_ssh_lockdown: false
+
+  tasks:
+
+    - name: Run UBUNTU22-CIS Role
+      include_role:
+        name: UBUNTU22-CIS
+      ignore_errors: yes   # Continue even if individual tasks fail
+
+    - name: Report failed tasks for this host
+      debug:
+        msg: "Some tasks may have failed. Check previous logs for details."
